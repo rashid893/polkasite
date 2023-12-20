@@ -636,10 +636,10 @@ from datetime import timedelta
 @shared_task
 def calculate_and_save_average():
     # Calculate the datetime 7 days ago
-    seven_days_ago = timezone.now() - timedelta(days=7)
+    two_hours_ago = timezone.now() - timedelta(hours = 2)
 
     # Filter data from the last 7 days
-    data = AprSave.objects.filter(date__gte=seven_days_ago)
+    data = AprSave.objects.filter(date__gte=two_hours_ago)
     
     # Calculate average for each 'hotkey'
     averages = data.values('key', 'validator').annotate(apr_average=Avg('apr'))
