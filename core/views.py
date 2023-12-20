@@ -308,8 +308,8 @@ def fetch_metagraph_data(netuid,max_attempts):
             for line in lines:
                 if line and line[0].isdigit():
                     row = [line[start:end].strip() for start, end in header_positions]
-                    print("The Data row ............................................",row)
                     data.append(row)
+                    print(" The Data row for:     ",netuid,row)
                     
             df = pd.DataFrame(data, columns=["UID", "STAKE(τ)", "RANK", "TRUST", "CONSENSUS", "INCENTIVE", "DIVIDENDS", "EMISSION(ρ)", "VTRUST", "VAL", "UPDATED", "ACTIVE", "AXON", "HOTKEY", "COLDKEY"])
             df.to_csv(f'static/netuid{netuid}.csv', index=False)
@@ -327,8 +327,8 @@ def fetch_metagraph_data(netuid,max_attempts):
 def process_metagraph_data(max_attempts=5, sleep_time=5):
     # Main logic
     
-    # list_uid = get_netuid_list()
-    list_uid = [1]
+    list_uid = get_netuid_list()
+    # list_uid = [1]
 
 
     for netuid in list_uid:
