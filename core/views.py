@@ -326,7 +326,8 @@ def fetch_metagraph_data(netuid,max_attempts):
 def process_metagraph_data(max_attempts=5, sleep_time=5):
     # Main logic
     
-    list_uid = get_netuid_list()
+    # list_uid = get_netuid_list()
+    list_uid = [1]
 
 
     for netuid in list_uid:
