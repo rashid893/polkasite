@@ -1,0 +1,44 @@
+[33mBittensor Version: Current 6.4.1/Latest 6.4.4
+Please update to the latest version at your earliest convenience. Run the following command to upgrade:
+
+[0mpython -m pip install --upgrade bittensor
+[34m2023-12-20 11:00:18.523[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[34m2023-12-20 11:00:18.524[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[34m2023-12-20 11:00:18.524[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[34m2023-12-20 11:00:23.700[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+                                      Subnets - finney                                       
+ NETUID    N    MAX_N   EMISSION  TEMPO    BURN         POW       SUDO                       
+   0      64    64.00    0.00%     100   τ1.00000  4611686.02 T   5C4hrfjw9DjXZTzV3MwzrrAr9… 
+   1     1024   1.02 K   13.03%    99    τ1.00000  1000000.00 T   5Hpd1smgd8tjQYqZ7tuXBxiC8… 
+   2      256   256.00   4.31%     360   τ2.72359    100.00 T     5HeQuPVRSZVE3LWdKx9q6upyC… 
+   3      256   256.00   6.74%     360   τ1.90240  1000000.00 T   5FNBJf6xruFpKNxi7SoQQdedX… 
+   4      256   256.00   10.29%    360   τ2.83067    100.00 T     5CXGPMnq9RCCLUEvp9G2iUuab… 
+   5      256   256.00   5.98%     360   τ0.16069  1000000.00 T   5HiveMEoWPmQmBAb8v63bKPcF… 
+   6      256   256.00   0.00%     360   τ0.00000    100.00 T     5HiWr9tvNhVc7wp539Gf4Gbe3… 
+   7      256   256.00   4.48%     360   τ0.09440  18446744.07 T  5DoFgSb8hdVCLAKTXCmd4bTSK… 
+   8      256   256.00   10.74%    360   τ3.22795  18446744.07 T  5F6tnxzAAxbhaWRmeUmB63JEM… 
+   9      256   256.00   5.06%     360   τ0.10000     10.00 M     5CqPn4g7Q6VsdEmbp2i2Z3nvJ… 
+   10     256   256.00   3.05%     360   τ1.74339  18446744.07 T  5F9onQyY4zYy4NxU11LHMwCVL… 
+   11    2048   2.05 K   0.00%     199   τ0.00100  1000000.00 T   5Hpd1smgd8tjQYqZ7tuXBxiC8… 
+   12     227   256.00   0.00%     360   τ0.00000  18446744.07 T  5GBvhgw2xdN7GrKqC6GotZffk… 
+   13     224   256.00   1.72%     360   τ0.28665  18446744.07 T  5HbKEeJtnp3WNjKPcRofMZEXQ… 
+   14     256   256.00   0.46%     360   τ0.18387  18446744.07 T  5H49qbc7o1QBrqvpnRL13t7yX… 
+   15     256   256.00   4.25%     360   τ0.00000  18446744.07 T  5ENvH22x8MGJs5vYvwH17BRwC… 
+   16     256   256.00   5.47%     360   τ1.20795  18446744.07 T  5HQSNp1m3NxyAP6yWqpyMyHER… 
+   17     256   256.00   0.00%     360   τ0.00000  18446744.07 T  5GhMybp9oSLMDJZ33VF4uNCDP… 
+   18     256   256.00   14.24%    360   τ2.58398  18446744.07 T  5HGvD47wBGWr4vY8C7aB3oxKH… 
+   19     57    256.00   0.00%     360   τ0.00000  18446744.07 T  5GHKowaS5Ys3xuGatE4K6VMoX… 
+   20     239   256.00   0.00%     360   τ0.00000  18446744.07 T  5EFfwD6EdDqyjmJNFWoooP47i… 
+   21     256   256.00   1.71%     360   τ0.11479  18446744.07 T  5DknijvVhBStBZuC1A6HGoeSn… 
+   22     134   256.00   0.00%     360   τ0.00000  18446744.07 T  5Cr2AU5ezSq9HGkCiiRMFGd2d… 
+   23     234   256.00   0.00%     360   τ0.00000  18446744.07 T  5ERviUUnkGeSFxtwuftyLhLwe… 
+   24     194   256.00   0.00%     360   τ0.00000  18446744.07 T  5Ew2PkTfy5if9QCV9e6sGTJAz… 
+   25     230   256.00   0.00%     360   τ0.00000  18446744.07 T  5E51HgnhgrToCdTZi2qb3RUXE… 
+   26     256   256.00   0.00%     360   τ0.00000  18446744.07 T  5EbrhAoHNxgpPkTdVtEr3mvSu… 
+   27     256   256.00   5.66%     360   τ0.53075  18446744.07 T  5EZUTdAbXyLmrs3oiPvfCM19n… 
+   28     256   256.00   2.80%     360   τ0.23271  18446744.07 T  5FRHjokB2H9aL8LP1rsvjJB5P… 
+   29     185   256.00   0.00%     360   τ0.00000  18446744.07 T  5FgxX45s23sKJcxSaKEc4tLPd… 
+   30     215   256.00   0.00%     360   τ0.00000  18446744.07 T  5HE2Tg3SAh1yQPZDMvCajBx7r… 
+   31     197   256.00   0.00%     360   τ0.00000  18446744.07 T  5C8YkRwoGDnYMLWUZAhhUuFtC… 
+   32     256   256.00   0.00%     360   τ0.00000  18446744.07 T  5HnNLdDUd79xoeCAgRMFmw9z2… 
+   33    10816                                                                               

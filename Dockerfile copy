@@ -1,0 +1,35 @@
+# Use an official Python runtime as the base image
+FROM python:3.9
+
+# Set environment variables for Python
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory in the container
+WORKDIR /polka
+
+# Install dependencies
+COPY requirements.txt /polka/
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+
+# Copy your Django application code to the container
+COPY . /polka/
+
+# Expose the port your Django application will run on (e.g., 8000)
+EXPOSE 8000
+RUN apt-get update && apt-get install -y cron
+# Create the /etc/crontabs directory
+RUN mkdir -p /etc/crontabs
+
+
+
+# Start the Django application
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+## you should do following commands after app has been installed in docker and docker run has been done
+
+# docker exec -it polka sh
+# python manage.py crontab add
+# sudo service cron start
