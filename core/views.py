@@ -433,7 +433,9 @@ def get_dominance_dict():
         return value
 
     # Apply the function to the 'N' column
-    df['N'] = df['N'].apply(replace_k_values).astype('int64')
+    df['N'] = df['N'].apply(replace_k_values)
+
+    df['N'] = df['N'].fillna(0).astype('int64')
 
     # Remove '%' sign from 'EMISSION' column and convert it to float
     df['EMISSION'] = df['EMISSION'].str.rstrip('%').astype(float)
