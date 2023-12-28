@@ -619,7 +619,7 @@ from datetime import timedelta
 @shared_task
 def calculate_and_save_average():
     # Calculate the datetime 7 days ago
-    two_hours_ago = timezone.now() - timedelta(hours = 2)
+    two_hours_ago = timezone.now() - timedelta(days = 7)
 
     # Filter data from the last 7 days
     data = AprSave.objects.filter(date__gte=two_hours_ago)
@@ -656,11 +656,6 @@ def scripts():
     output_csv_path = 'static/TAO_Rewards.csv'
     calculate_and_save_daily_tao_rewards('https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json', dominance_dict, output_csv_path)
     calculate_and_save_apr_every_two_hours()
-
-
-
-############## AVERAGE ################################333
-'''it will run after every 7 days , but when the apr table has enough data to calculate the average'''
 
 
 
