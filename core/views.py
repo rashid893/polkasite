@@ -558,7 +558,6 @@ def calculate_and_save_apr_every_two_hours():
 
                 apr = (365 * reward) / validator_stake
                 apr = apr - ((percentage_to_be_taken_out / 100) * apr)
-                apr = round(apr, 2) * 100
 
                 # Save the data for all hotkeys in the AprSave model
                 AprSave.objects.create(
