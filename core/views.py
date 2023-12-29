@@ -550,7 +550,7 @@ def calculate_and_save_apr_every_two_hours():
                 elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
                     percentage_to_be_taken_out = 9
                 elif hotkey_prefix == '5HK5tp':
-                    percentage_to_be_taken_out = 0.5
+                    percentage_to_be_taken_out = 1
                 else:
                     percentage_to_be_taken_out = 18
 
@@ -558,7 +558,6 @@ def calculate_and_save_apr_every_two_hours():
 
                 apr = (365 * reward) / validator_stake
                 apr = apr - ((percentage_to_be_taken_out / 100) * apr)
-                apr = round(apr, 2) * 100
 
                 # Save the data for all hotkeys in the AprSave model
                 AprSave.objects.create(
@@ -638,7 +637,7 @@ from datetime import timedelta
 @shared_task
 def calculate_and_save_average():
     # Calculate the datetime 7 days ago
-    two_hours_ago = timezone.now() - timedelta(hours = 2)
+    two_hours_ago = timezone.now() - timedelta(days=7)
 
     # Filter data from the last 7 days
     data = AprSave.objects.filter(date__gte=two_hours_ago)
