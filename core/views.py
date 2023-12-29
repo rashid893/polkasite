@@ -23,6 +23,8 @@ import subprocess
 import re
 from datetime import timedelta
 from django.utils import timezone
+import asyncio
+import time
 
 from celery import shared_task
 
@@ -291,11 +293,15 @@ def get_netuid_list():
         except subprocess.CalledProcessError:
             pass  # Retry silently
 
-def fetch_metagraph_data(netuid,max_attempts):
+
+
+async def fetch_metagraph_data(netuid, max_attempts):
     attempt = 1
     while attempt <= max_attempts:
         try:
-            output = subprocess.check_output(['btcli', 's', 'metagraph'], input=str(netuid).encode()).decode('utf-8')
+            process = await asyncio.create_subprocess_exec('btcli', 's', 'metagraph', stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE)
+            stdout, stderr = await process.communicate(input=str(netuid).encode())
+            output = stdout.decode('utf-8')
             lines = output.split("\n")
             header_positions = []
             data = []
@@ -314,25 +320,20 @@ def fetch_metagraph_data(netuid,max_attempts):
             df = pd.DataFrame(data, columns=["UID", "STAKE(τ)", "RANK", "TRUST", "CONSENSUS", "INCENTIVE", "DIVIDENDS", "EMISSION(ρ)", "VTRUST", "VAL", "UPDATED", "ACTIVE", "AXON", "HOTKEY", "COLDKEY"])
             df.to_csv(f'static/netuid{netuid}.csv', index=False)
             break
-        except subprocess.CalledProcessError as e:
-            time.sleep(5)
-            attempt += 1
-        except subprocess.WebSocketConnectionClosedException as e:
-            time.sleep(5)
+        except (asyncio.CancelledError, subprocess.CalledProcessError) as e:
+            await asyncio.sleep(5)
             attempt += 1
 
     if attempt > max_attempts:
         print(f"Failed to fetch metagraph data for UID {netuid} after {max_attempts} attempts.")
-
-def process_metagraph_data(max_attempts=5, sleep_time=5):
+async def process_metagraph_data(max_attempts=5, sleep_time=5):
     # Main logic
     
-    # list_uid = get_netuid_list()
-    list_uid = [1,2,3,4,5]
+    list_uid = get_netuid_list()
 
 
     for netuid in list_uid:
-        fetch_metagraph_data(netuid,max_attempts)
+        await fetch_metagraph_data(netuid,max_attempts)
 
     all_data = []
     for netuid in list_uid:
@@ -649,8 +650,8 @@ def calculate_and_save_average():
 
 
 @shared_task
-def scripts():
-    process_metagraph_data()
+async def scripts():
+    await process_metagraph_data()
     dominance_dict = get_dominance_dict()
     output_csv_path = 'static/TAO_Rewards.csv'
     calculate_and_save_daily_tao_rewards('https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json', dominance_dict, output_csv_path)
