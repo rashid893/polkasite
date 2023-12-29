@@ -147,7 +147,7 @@ CELERY_BEAT_SCHEDULE = {
     # },
     'calculate_and_save_average': {
         'task': 'core.views.calculate_and_save_average',
-        'schedule': 3600,  # Run the in once every week
+        'schedule': 600,  # Run the in once every week
     },
 
       
