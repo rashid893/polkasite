@@ -332,6 +332,7 @@ def process_metagraph_data(max_attempts=5, sleep_time=5):
 
 
     for netuid in list_uid:
+        print(f"Fetching metagraph data for UID {netuid}...")
         fetch_metagraph_data(netuid,max_attempts)
 
     all_data = []
