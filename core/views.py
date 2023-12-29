@@ -508,7 +508,7 @@ def calculate_and_save_apr():
                     elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
                         percentage_to_be_taken_out = 9
                     elif hotkey_prefix == '5HK5tp':
-                        percentage_to_be_taken_out = 1
+                        percentage_to_be_taken_out = 0.5
                     else: 
                         percentage_to_be_taken_out = 18
 
@@ -550,7 +550,7 @@ def calculate_and_save_apr_every_two_hours():
                 elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
                     percentage_to_be_taken_out = 9
                 elif hotkey_prefix == '5HK5tp':
-                    percentage_to_be_taken_out = 1
+                    percentage_to_be_taken_out = 0.5
                 else:
                     percentage_to_be_taken_out = 18
 
@@ -619,10 +619,10 @@ from datetime import timedelta
 @shared_task
 def calculate_and_save_average():
     # Calculate the datetime 7 days ago
-    seven_days_ago = timezone.now() - timedelta(days = 7)
+    two_hours_ago = timezone.now() - timedelta(days = 7)
 
     # Filter data from the last 7 days
-    data = AprSave.objects.filter(date__gte=seven_days_ago)
+    data = AprSave.objects.filter(date__gte=two_hours_ago)
     
     # Calculate average for each 'hotkey'
     averages = data.values('key', 'validator').annotate(apr_average=Avg('apr'))
