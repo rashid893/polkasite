@@ -23,7 +23,7 @@ import subprocess
 import re
 from datetime import timedelta
 from django.utils import timezone
-
+import asyncio
 from celery import shared_task
 
 # Example of using the function:
@@ -279,7 +279,7 @@ def get_supply_data(request):
 ##############################Script Functions#####################################
 
 
-def get_netuid_list():
+async def get_netuid_list():
     while True:
         try:
             output_bytes = subprocess.check_output(['btcli', 's', 'list'])
@@ -291,7 +291,7 @@ def get_netuid_list():
         except subprocess.CalledProcessError:
             pass  # Retry silently
 
-def fetch_metagraph_data(netuid,max_attempts):
+async def fetch_metagraph_data(netuid,max_attempts):
     attempt = 1
     while attempt <= max_attempts:
         try:
@@ -324,15 +324,14 @@ def fetch_metagraph_data(netuid,max_attempts):
     if attempt > max_attempts:
         print(f"Failed to fetch metagraph data for UID {netuid} after {max_attempts} attempts.")
 
-def process_metagraph_data(max_attempts=5, sleep_time=5):
+async def process_metagraph_data(max_attempts=5, sleep_time=5):
     # Main logic
     
-    # list_uid = get_netuid_list()
-    list_uid = [1,2,3,4,5]
+    list_uid = await get_netuid_list()
 
+    tasks = [fetch_metagraph_data(netuid, max_attempts) for netuid in list_uid]
 
-    for netuid in list_uid:
-        fetch_metagraph_data(netuid,max_attempts)
+    await asyncio.gather(*tasks)
 
     all_data = []
     for netuid in list_uid:
@@ -646,11 +645,12 @@ def calculate_and_save_average():
             delegate.apr_average = average_apr  # Use the rounded value here as well
             delegate.save()
 
-
+@shared_task
+def process_metagraph_data_task():
+    asyncio.run(process_metagraph_data())
 
 @shared_task
 def scripts():
-    process_metagraph_data()
     dominance_dict = get_dominance_dict()
     output_csv_path = 'static/TAO_Rewards.csv'
     calculate_and_save_daily_tao_rewards('https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json', dominance_dict, output_csv_path)
