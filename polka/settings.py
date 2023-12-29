@@ -138,7 +138,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'fetch-data-tasks': {
         'task': 'core.views.scripts',
-        'schedule': 600,  # Run the task every 3600 seconds (3600 seconds)
+        'schedule': 7200,  # Run the task every 3600 seconds (3600 seconds)
     },
     #     #calculate_and_save_apr_every_two_hours
     # 'calculate_and_save_apr_every_two_hours': {
@@ -147,7 +147,7 @@ CELERY_BEAT_SCHEDULE = {
     # },
     'calculate_and_save_average': {
         'task': 'core.views.calculate_and_save_average',
-        'schedule': 300,  # Run the in once every week
+        'schedule': 1800,  # Run the in once every week
     },
 
       

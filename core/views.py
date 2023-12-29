@@ -327,8 +327,8 @@ def fetch_metagraph_data(netuid,max_attempts):
 def process_metagraph_data(max_attempts=5, sleep_time=5):
     # Main logic
     
-    # list_uid = get_netuid_list()
-    list_uid = [1,2,3,4,5]
+    list_uid = get_netuid_list()
+    # list_uid = [1]
 
 
     for netuid in list_uid:
@@ -612,6 +612,25 @@ def delegate_undelegate_status(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+
+
+@shared_task
+def scripts():
+    process_metagraph_data()
+    dominance_dict = get_dominance_dict()
+    output_csv_path = 'static/TAO_Rewards.csv'
+    calculate_and_save_daily_tao_rewards('https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json', dominance_dict, output_csv_path)
+    calculate_and_save_apr_every_two_hours()
+
+
+
+############## AVERAGE ################################333
+'''it will run after every 7 days , but when the apr table has enough data to calculate the average'''
+
+
+
 from django.db.models import Avg
 from django.utils import timezone
 from datetime import timedelta
@@ -646,23 +665,4 @@ def calculate_and_save_average():
         for delegate in delegates:
             delegate.apr_average = average_apr  # Use the rounded value here as well
             delegate.save()
-
-
-
-@shared_task
-def scripts():
-    process_metagraph_data()
-    dominance_dict = get_dominance_dict()
-    output_csv_path = 'static/TAO_Rewards.csv'
-    calculate_and_save_daily_tao_rewards('https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json', dominance_dict, output_csv_path)
-    calculate_and_save_apr_every_two_hours()
-
-
-
-############## AVERAGE ################################333
-'''it will run after every 7 days , but when the apr table has enough data to calculate the average'''
-
-
-
-
 
