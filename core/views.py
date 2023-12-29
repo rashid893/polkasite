@@ -561,7 +561,7 @@ def calculate_and_save_apr_every_two_hours():
                 reward = matching_row['Total_Daily_TAO_Rewards'].iloc[0]
 
                 apr = (365 * reward) / validator_stake
-                apr = apr - ((percentage_to_be_taken_out / 100) * apr)
+                apr = (apr - ((percentage_to_be_taken_out / 100) * apr))*100
 
                 # Save the data for all hotkeys in the AprSave model
                 AprSave.objects.create(
