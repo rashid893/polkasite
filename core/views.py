@@ -287,6 +287,7 @@ def get_netuid_list():
             matches = re.findall(r'^\s*(\d+)', output, re.MULTILINE)
             netuid_list = [int(match) for match in matches if int(match) != 0]
             netuid_list = netuid_list[:-1]
+            print("The netuid list is ............................................",netuid_list)
             return netuid_list
         except subprocess.CalledProcessError:
             pass  # Retry silently
@@ -308,16 +309,18 @@ def fetch_metagraph_data(netuid,max_attempts):
             for line in lines:
                 if line and line[0].isdigit():
                     row = [line[start:end].strip() for start, end in header_positions]
-                    print("The Data row ............................................",row)
+                    print("The Data row .............................................................................",row)
                     data.append(row)
                     
             df = pd.DataFrame(data, columns=["UID", "STAKE(τ)", "RANK", "TRUST", "CONSENSUS", "INCENTIVE", "DIVIDENDS", "EMISSION(ρ)", "VTRUST", "VAL", "UPDATED", "ACTIVE", "AXON", "HOTKEY", "COLDKEY"])
             df.to_csv(f'static/netuid{netuid}.csv', index=False)
             break
         except subprocess.CalledProcessError as e:
+            print(f"An error occurred.........................................: {e.output}")
             time.sleep(5)
             attempt += 1
         except subprocess.WebSocketConnectionClosedException as e:
+            print(f"Websocker Connection Error occured::::::::::::::::::::::::::::::::: {e.message}")
             time.sleep(5)
             attempt += 1
 
@@ -332,7 +335,7 @@ def process_metagraph_data(max_attempts=5, sleep_time=5):
 
 
     for netuid in list_uid:
-        print(f"Fetching metagraph data for UID {netuid}...")
+        print(f"Fetching metagraph data for UID ########################################################### {netuid}...")
         fetch_metagraph_data(netuid,max_attempts)
 
     all_data = []
