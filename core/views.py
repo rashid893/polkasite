@@ -563,6 +563,7 @@ def calculate_and_save_apr_every_two_hours():
                 apr = (365 * reward) / validator_stake
                 apr = (apr - ((percentage_to_be_taken_out / 100) * apr))*100
 
+
                 # Save the data for all hotkeys in the AprSave model
                 AprSave.objects.create(
                     validator=delegate.name,
@@ -641,7 +642,7 @@ from datetime import timedelta
 @shared_task
 def calculate_and_save_average():
     # Calculate the datetime 7 days ago
-    seven_days_ago = timezone.now() - timedelta(days=7)
+    seven_days_ago = timezone.now() - timedelta(days=30)
 
     # Filter data from the last 7 days
     data = AprSave.objects.filter(date__gte=seven_days_ago)
