@@ -512,7 +512,7 @@ def calculate_and_save_apr():
                     elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
                         percentage_to_be_taken_out = 9
                     elif hotkey_prefix == '5HK5tp':
-                        percentage_to_be_taken_out = 0.5
+                        percentage_to_be_taken_out = 1
                     else: 
                         percentage_to_be_taken_out = 18
 
@@ -550,13 +550,17 @@ def calculate_and_save_apr_every_two_hours():
 
             if not matching_row.empty:
                 if hotkey_prefix == '5DvTpi':
+                    print("No percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                     percentage_to_be_taken_out = 0
                 elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
+                    print("NINEEEEEE percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+
                     percentage_to_be_taken_out = 9
                 elif hotkey_prefix == '5HK5tp':
                     percentage_to_be_taken_out = 1
                 else:
                     percentage_to_be_taken_out = 18
+                    print("18888888888888888888 percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
                 reward = matching_row['Total_Daily_TAO_Rewards'].iloc[0]
 
@@ -565,12 +569,15 @@ def calculate_and_save_apr_every_two_hours():
 
 
                 # Save the data for all hotkeys in the AprSave model
-                AprSave.objects.create(
-                    validator=delegate.name,
-                    apr=apr,
-                    key=hotkey_prefix,
-                    date=timezone.now()
-                )
+                try:
+                    AprSave.objects.create(
+                        validator=delegate.name,
+                        apr=apr,
+                        key=hotkey_prefix,
+                        date=timezone.now()
+                    )
+                except Exception as e:
+                    print(f"An error occurred: {e}")
 
                
             else:
