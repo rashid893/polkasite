@@ -1,37 +1,38 @@
-import numpy as np
-from django.shortcuts import render
-import json
-from django.http import JsonResponse
-from .models import Supply
-from .models import Delegate,DelegateUndelegateStatus,AprSave,WeeklyAprAverage
-import bittensor
-import pandas as pd
-import requests
-from django.core import serializers
-from django.http import JsonResponse
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import Delegate
-from django.db.models import Avg
-import subprocess
 import os
 import time
 import re
 import math
 import time
+import json
+import requests
+import bittensor as bt
 import subprocess
-import re
+import pandas as pd
+import numpy as np
+from .models import Supply
+from django.core import serializers
 from datetime import timedelta
 from django.utils import timezone
-
 from celery import shared_task
-
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Delegate
+from django.db.models import Avg
+from django.http import JsonResponse
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Delegate,DelegateUndelegateStatus,AprSave,WeeklyAprAverage
+#from django.views.decorators.cors import cors_headers
 # Example of using the function:
 emissions_day = 2952  # example emissions per day
 number_of_days_in_year = 365  # days in a year
 total_stake_float = 4639675  # example total stake
 compounds_per_day = 72  # example compounding periods per day
 
+
+# Connecting subtensor's default local entrypoint "ws://127.0.0.1:9944"
+#subtensor = bt.subtensor( network = 'local', chain_endpoint = 'ws://31.220.92.211' )
+subtensor = bt.subtensor(network='62.169.21.112:9944')
 
 def calculate_apr_and_apy(emissions_day, number_of_days_in_year, total_stake_float, compounds_per_day):
     """
@@ -83,8 +84,7 @@ def fetch_and_save_data():
         https://colab.research.google.com/drive/1jzG6JA2d5UA_iR5O0YnOnU2a546O-aKR
     """
 
-    subtensor = bittensor.subtensor()
-
+    
     url = "https://raw.githubusercontent.com/opentensor/bittensor-delegates/master/public/delegates.json"
 
     response = requests.get(url)
@@ -110,12 +110,6 @@ def fetch_and_save_data():
     block = subtensor.get_current_block()
     block
 
-    # # Excel row number 25
-    # balances = subtensor.get_balances()
-    # # Removing τ and converting values to float row number 25 in excel
-    # converted_balances = {k: float(str(v).replace("τ", "").replace(",", "")) for k, v in balances.items()}
-    # count = sum(1 for value in converted_balances.values() if value >= 0.1)
-    # count
 
     """# Get List of all validators and information"""
 
@@ -215,9 +209,8 @@ def fetch_and_save_data():
     volume_24h = data["market_data"]["total_volume"]["usd"]
     current_price = data["market_data"]["current_price"]["usd"]
     price_change_24h = data["market_data"]["price_change_percentage_24h"]
-    subtensor = bittensor.subtensor()
     circulating_supply = float(
-    str(subtensor.total_issuance()).replace('τ', '').replace(',', '')) - 572399.00
+    str(subtensor.total_issuance()).replace('τ', '').replace(',', '')) 
     total_stakes = float(
     str(subtensor.total_stake()).replace('τ', '').replace(',', ''))
     market_cap = circulating_supply * current_price
@@ -259,7 +252,7 @@ def get_all_delegates(request):
             'apr_average':delegate.apr_average,
             'emission': delegate.emission,
             'reward': delegate.reward,
-            
+            'fees': delegate.fees,
             'commission': delegate.benefits
         }
         delegate_list.append(delegate_dict)
@@ -280,62 +273,68 @@ def get_supply_data(request):
 
 
 def get_netuid_list():
-    while True:
-        try:
-            output_bytes = subprocess.check_output(['btcli', 's', 'list'])
-            output = output_bytes.decode('utf-8')
-            matches = re.findall(r'^\s*(\d+)', output, re.MULTILINE)
-            netuid_list = [int(match) for match in matches if int(match) != 0]
-            netuid_list = netuid_list[:-1]
-            print("The netuid list is ............................................",netuid_list)
-            return netuid_list
-        except subprocess.CalledProcessError:
-            pass  # Retry silently
+        # Get all subnet UIDs
+    subnet_uids = subtensor.get_all_subnet_netuids()
 
-def fetch_metagraph_data(netuid,max_attempts):
+    return subnet_uids[1:]
+
+
+def fetch_metagraph_data(netuid, max_attempts):
     attempt = 1
     while attempt <= max_attempts:
         try:
-            output = subprocess.check_output(['btcli', 's', 'metagraph'], input=str(netuid).encode()).decode('utf-8')
-            lines = output.split("\n")
-            header_positions = []
-            data = []
-            
-            for line in lines:
-                if line.startswith("UID"):
-                    header_positions = extract_column_positions(line)
-                    break
+            # Initialize and sync the metagraph
+            metagraph = bt.metagraph(netuid=netuid, network='62.169.21.112:9944', lite=True)
+            metagraph.sync(block=None, lite=True)  # Sync to the latest block
 
-            for line in lines:
-                if line and line[0].isdigit():
-                    row = [line[start:end].strip() for start, end in header_positions]
-                    print("The Data row .............................................................................",row)
-                    data.append(row)
-                    
-            df = pd.DataFrame(data, columns=["UID", "STAKE(τ)", "RANK", "TRUST", "CONSENSUS", "INCENTIVE", "DIVIDENDS", "EMISSION(ρ)", "VTRUST", "VAL", "UPDATED", "ACTIVE", "AXON", "HOTKEY", "COLDKEY"])
+            # Access different parameters from the metagraph
+            # Access different parameters from the metagraph
+            hotkeys = metagraph.hotkeys  # List of hotkeys
+            coldkeys = metagraph.coldkeys  # List of coldkeys
+            UIDs = range(len(hotkeys))  # Assuming UID is the index of neurons
+            stakes = metagraph.S.numpy()  # Total stake
+            ranks = metagraph.R.numpy()  # Ranks
+            trusts = metagraph.T.numpy()  # Trust
+            consensus = metagraph.C.numpy()  # Consensus
+            incentives = metagraph.I.numpy()  # Incentive
+            dividends = metagraph.D.numpy()  # Dividends
+            emissions = metagraph.E.numpy()  # Emission
+            vtrust = metagraph.Tv.numpy()  # Validator trust
+
+            # Create a DataFrame from the metagraph data
+            df = pd.DataFrame({
+                "UID": UIDs,
+                "HOTKEY": hotkeys,
+                "COLDKEY": coldkeys,
+                "STAKE(τ)": stakes,
+                "RANK": ranks,
+                "TRUST": trusts,
+                "CONSENSUS": consensus,
+                "INCENTIVE": incentives,
+                "DIVIDENDS": dividends,
+                "EMISSION(ρ)": emissions,
+                "VTRUST": vtrust
+            })
+
+            # Save DataFrame to CSV
             df.to_csv(f'static/netuid{netuid}.csv', index=False)
             break
-        except subprocess.CalledProcessError as e:
-            print(f"An error occurred.........................................: {e.output}")
-            time.sleep(5)
-            attempt += 1
-        except subprocess.WebSocketConnectionClosedException as e:
-            print(f"Websocker Connection Error occured::::::::::::::::::::::::::::::::: {e.message}")
-            time.sleep(5)
-            attempt += 1
 
+        except Exception as e:  # Catching general exceptions
+            print(f"Attempt {attempt}: An error occurred - {e}")
+            time.sleep(5)  # Wait for 5 seconds before retrying
+            attempt += 1
     if attempt > max_attempts:
         print(f"Failed to fetch metagraph data for UID {netuid} after {max_attempts} attempts.")
 
-def process_metagraph_data(max_attempts=5, sleep_time=5):
+def process_metagraph_data(max_attempts=10, sleep_time=5):
     # Main logic
     
     list_uid = get_netuid_list()
-    # list_uid = [1]
 
 
     for netuid in list_uid:
-        print(f"Fetching metagraph data for UID ########################################################### {netuid}...")
+        print(f"Fetching metagraph data for UID {netuid}...")
         fetch_metagraph_data(netuid,max_attempts)
 
     all_data = []
@@ -344,12 +343,12 @@ def process_metagraph_data(max_attempts=5, sleep_time=5):
         try:
             if os.path.exists(filepath):
                 df = pd.read_csv(filepath)
-                df['ACTIVE'] = pd.to_numeric(df['ACTIVE'], errors='coerce', downcast='integer')
+                #df['ACTIVE'] = pd.to_numeric(df['ACTIVE'], errors='coerce', downcast='integer')
                 df['EMISSION(ρ)'] = pd.to_numeric(df['EMISSION(ρ)'], errors='coerce')
                 df['DIVIDENDS'] = pd.to_numeric(df['DIVIDENDS'], errors='coerce')
-                active_df = df[df['ACTIVE'] == 1]
+                #active_df = df[df['ACTIVE'] == 1]
 
-                for _, row in active_df.iterrows():
+                for _, row in df.iterrows():
                     print(row['HOTKEY'], row['COLDKEY'], row['EMISSION(ρ)'], row['DIVIDENDS'])
                     all_data.append([row['HOTKEY'], row['COLDKEY'], row['EMISSION(ρ)'], row['DIVIDENDS']])
                 print(f"Processed file {filepath}")
@@ -360,21 +359,14 @@ def process_metagraph_data(max_attempts=5, sleep_time=5):
     aggregated_df = final_df.groupby(['HOTKEY', 'COLDKEY']).agg({'EMISSION(ρ)': 'sum', 'DIVIDENDS': 'sum'}).reset_index()
     aggregated_df.to_csv('static/aggregated_emissions_dividends.csv', index=False)
 
-def extract_column_positions(header_line):
-    columns = ["UID", "STAKE(τ)", "RANK", "TRUST", "CONSENSUS", "INCENTIVE", "DIVIDENDS", "EMISSION(ρ)", "VTRUST", "VAL", "UPDATED", "ACTIVE", "AXON", "HOTKEY", "COLDKEY"]
-    positions = []
-    for col in columns:
-        start = header_line.find(col)
-        end = start + len(col)
-        positions.append((start, end))
-    return positions
 
 def get_dividends_for_hotkey(hotkey, netuid, dominance_dict):
     try:
         # Load the specific netuid CSV file
         df = pd.read_csv(f'static/netuid{netuid}.csv')
         # Filter for the specific hotkey
-        hotkey_row = df[df['HOTKEY'] == hotkey]
+        #hotkey_row = df[df['HOTKEY'] == hotkey]
+        hotkey_row = df[df['HOTKEY'].str[:6] == hotkey[:6]]
         if not hotkey_row.empty:
             return hotkey_row['DIVIDENDS'].iloc[0] * (dominance_dict[netuid] / 100) * 2952
     except FileNotFoundError:
@@ -410,19 +402,31 @@ def process_to_csv(input_file, output_csv):
     df.to_csv(output_csv, index=False)
 
 def get_dominance_dict():
-    # Run the btcli s list command and capture the output
-    output = subprocess.check_output(['btcli', 's', 'list'], text=True)
+    # Initialize the output variable
+    output = None
 
-    # Save the output to a file
-    with open('temp_output.txt', 'w') as file:
-        file.write(output)
+    # Try the operation up to 5 times
+    for _ in range(5):
+        try:
+            output = subprocess.check_output(['btcli', 's', 'list'], text=True)
+            break  # If the operation is successful, break the loop
+        except subprocess.CalledProcessError:
+            pass  # If an error occurs, retry the operation
+
+    # If the operation failed 5 times, read from the existing file
+    if output is None:
+        with open('temp_output.txt', 'r') as file:
+            output = file.read()
+    else:
+        # If the operation was successful, write the output to a new file
+        with open('temp_output.txt', 'w') as file:
+            file.write(output)
 
     # Specify the output CSV file path
     output_csv_path = 'output.csv'
 
     # Process the saved output to CSV with the updated code
     process_to_csv('temp_output.txt', output_csv_path)
-
     # Load the saved output from the file into a DataFrame
     df = pd.read_csv(output_csv_path, delimiter=',', skipinitialspace=True, usecols=['NETUID', 'N', 'MAX_N', 'EMISSION', 'TEMPO', 'BURN', 'POW', 'SUDO'])
 
@@ -451,9 +455,6 @@ def get_dominance_dict():
     dominance_dict = {k: 0.0 if pd.isna(v) else v for k, v in dominance_dict.items()}
 
     return dominance_dict
-
-# Call the function to get dominance_dict
-dominance_dict = get_dominance_dict()
 
 
 def calculate_and_save_daily_tao_rewards(github_url, dominance_dict, output_csv_path):
@@ -511,8 +512,6 @@ def calculate_and_save_apr():
                         percentage_to_be_taken_out = 0
                     elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
                         percentage_to_be_taken_out = 9
-                    elif hotkey_prefix == '5HK5tp':
-                        percentage_to_be_taken_out = 1
                     else: 
                         percentage_to_be_taken_out = 18
 
@@ -549,24 +548,17 @@ def calculate_and_save_apr_every_two_hours():
             matching_row = df[df['HOTKEY'].str.startswith(hotkey_prefix)]
 
             if not matching_row.empty:
-                if hotkey_prefix == '5DvTpi':
-                    print("No percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                    percentage_to_be_taken_out = 0
-                elif hotkey_prefix == '5EhvL1' or hotkey_prefix == '5FFApa':
-                    print("NINEEEEEE percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
-                    percentage_to_be_taken_out = 9
-                elif hotkey_prefix == '5HK5tp':
-                    percentage_to_be_taken_out = 1
-                else:
+                if hotkey_prefix in ['5HbLYX', '5F4tQy', '5CaNj3']:
                     percentage_to_be_taken_out = 18
-                    print("18888888888888888888 percentage taken out XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
+                else:
+                    percentage_to_be_taken_out = 9
+                            
                 reward = matching_row['Total_Daily_TAO_Rewards'].iloc[0]
 
                 apr = (365 * reward) / validator_stake
                 apr = (apr - ((percentage_to_be_taken_out / 100) * apr))*100
-
+                delegate.fees = percentage_to_be_taken_out
+                delegate.save()
 
                 # Save the data for all hotkeys in the AprSave model
                 try:
@@ -578,12 +570,13 @@ def calculate_and_save_apr_every_two_hours():
                     )
                 except Exception as e:
                     print(f"An error occurred: {e}")
-
-               
             else:
                 print(f'No matching row for hotkey prefix: {hotkey_prefix}')
         else:
             print(f'Validator stake is None or 0 for hotkey prefix: {hotkey_prefix}')
+
+
+
 
 
 @csrf_exempt
@@ -637,8 +630,7 @@ def scripts():
 
 
 
-############## AVERAGE ################################333
-'''it will run after every 7 days , but when the apr table has enough data to calculate the average'''
+############## AVERAGE ################################
 
 
 

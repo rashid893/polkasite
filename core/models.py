@@ -20,7 +20,7 @@ class Delegate(models.Model):
     reward=models.CharField(max_length=100,null=True, blank=True)
     benefits = models.FloatField(null=True, blank=True)
     tooltips = models.TextField(blank=True)
-
+    fees= models.CharField(max_length=100)
     def __str__(self):
         return self.name
 

@@ -1,0 +1,98 @@
+[2023-12-29 22:35:25,732: WARNING/MainProcess] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:35:27,268: WARNING/MainProcess] /home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2023-12-29 22:35:27,282: WARNING/MainProcess] /home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2023-12-29 22:35:27,306: WARNING/MainProcess] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:35:30,891: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:30.887[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:35:30,892: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:30.889[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:35:30,892: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:30.889[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:35:31,053: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:31.049[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:35:31,105: WARNING/ForkPoolWorker-3] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:35:41,091: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:41.090[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:35:41,091: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:41.091[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:35:41,092: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:41.091[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:35:41,336: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:35:41.336[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:35:42,982: WARNING/ForkPoolWorker-6] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:43:03,496: WARNING/MainProcess] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:43:04,809: WARNING/MainProcess] /home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2023-12-29 22:43:04,818: WARNING/MainProcess] /home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/worker/consumer/consumer.py:507: CPendingDeprecationWarning: The broker_connection_retry configuration setting will no longer determine
+whether broker connection retries are made during startup in Celery 6.0 and above.
+If you wish to retain the existing behavior for retrying connections on startup,
+you should set broker_connection_retry_on_startup to True.
+  warnings.warn(
+
+[2023-12-29 22:43:04,837: WARNING/MainProcess] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:43:08,858: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:08.854[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:43:08,859: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:08.856[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:43:08,859: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:08.856[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:43:09,026: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:09.025[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:43:24,651: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:24.651[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:43:24,652: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:24.651[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:43:24,652: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:24.652[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:43:24,932: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:43:24.931[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:43:26,634: WARNING/ForkPoolWorker-6] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:48:08,920: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:08.907[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:48:08,930: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:08.908[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:48:08,937: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:08.908[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:48:09,106: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:09.106[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:48:24,299: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:24.298[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:48:24,299: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:24.299[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:48:24,300: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:24.299[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:48:24,490: WARNING/ForkPoolWorker-6] [34m2023-12-29 22:48:24.490[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:53:09,019: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:09.014[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:53:09,019: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:09.015[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:53:09,019: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:09.016[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:53:09,195: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:09.190[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:53:19,808: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:19.808[0m | [1m      INFO      [0m | You are connecting to finney network with endpoint wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:53:19,809: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:19.809[0m | [33m[1m    WARNING     [0m | We strongly encourage running a local subtensor node whenever possible. This increases decentralization and resilience of the network.
+[2023-12-29 22:53:19,810: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:19.809[0m | [33m[1m    WARNING     [0m | In a future release, local subtensor will become the default endpoint. To get ahead of this change, please run a local subtensor node and point to it.
+[2023-12-29 22:53:20,079: WARNING/ForkPoolWorker-2] [34m2023-12-29 22:53:20.078[0m | [1m      INFO      [0m | Connected to finney network and wss://entrypoint-finney.opentensor.ai:443.
+[2023-12-29 22:53:21,971: WARNING/ForkPoolWorker-2] No hostname was supplied. Reverting to default 'localhost'
+[2023-12-29 22:53:49,454: ERROR/ForkPoolWorker-6] Task core.views.scripts[3979f75a-76f2-46f2-9128-6b1f7c2ed193] raised unexpected: AttributeError("module 'subprocess' has no attribute 'WebSocketConnectionClosedException'")
+Traceback (most recent call last):
+  File "/home/pdf/polka/core/views.py", line 298, in fetch_metagraph_data
+    output = subprocess.check_output(['btcli', 's', 'metagraph'], input=str(netuid).encode()).decode('utf-8')
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/subprocess.py", line 420, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/subprocess.py", line 503, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/subprocess.py", line 1130, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/subprocess.py", line 1977, in _communicate
+    ready = selector.select(timeout)
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/selectors.py", line 416, in select
+    fd_event_list = self._selector.poll(timeout)
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/billiard/common.py", line 107, in _shutdown_cleanup
+    sys.exit(-(256 - signum))
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/billiard/pool.py", line 282, in exit
+    return _exit(status)
+SystemExit: -241
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/app/trace.py", line 477, in trace_task
+    R = retval = fun(*args, **kwargs)
+  File "/home/pdf/miniconda3/envs/pdf/lib/python3.9/site-packages/celery/app/trace.py", line 760, in __protected_call__
+    return self.run(*args, **kwargs)
+  File "/home/pdf/polka/core/views.py", line 620, in scripts
+    process_metagraph_data()
+  File "/home/pdf/polka/core/views.py", line 335, in process_metagraph_data
+    fetch_metagraph_data(netuid,max_attempts)
+  File "/home/pdf/polka/core/views.py", line 320, in fetch_metagraph_data
+    except subprocess.WebSocketConnectionClosedException as e:
+AttributeError: module 'subprocess' has no attribute 'WebSocketConnectionClosedException'

@@ -26,8 +26,8 @@ SECRET_KEY = "django-insecure-9tl6t!#j945@khg%q6-dy*6_6#%-n_k#2#a%7o)rz=0hlw&cy9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['91.235.116.250','api.bittensorstaking.com','172.17.0.1']  shaukat
-ALLOWED_HOSTS = ['127.0.0.1','85.239.241.96']
+ALLOWED_HOSTS = ['91.235.116.250','api.bittensorstaking.com','172.17.0.1'] #shaukat
+# ALLOWED_HOSTS = ['127.0.0.1','85.239.241.96']
 
 
 # Application definition
@@ -49,9 +49,9 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+#    'corsheaders.middleware.CorsMiddleware',
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
+   "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -122,13 +122,18 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+#CSRF_TRUSTED_ORIGINS = ['https://*.bittensorstaking.com']
 
 
-# CORS_ALLOWED_ORIGINS = ['http://91.235.116.250', 'http://imp22']  # [      sha
-# #    "https://bittensor-staking.vercel.app",
-# # ]
-# CSRF_TRUSTED_ORIGINS = ['http://91.235.116.250:8001']
+#CORS_ALLOWED_ORIGINS = ['http://91.235.116.250', 'http://imp22']  # shaukat
 
+
+#CSRF_TRUSTED_ORIGINS = ['http://91.235.116.250:8001']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://api.bittensorstaking.com',
+    'https://bittensorstaking.com',
+]
 
 # # Schedule the Celery task
 CELERY_BEAT_SCHEDULE = {
@@ -138,7 +143,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     'fetch-data-tasks': {
         'task': 'core.views.scripts',
-        'schedule': 900,  # Run the task every 3600 seconds (3600 seconds)
+        'schedule': 86400,  # Run the task every 3600 seconds (3600 seconds)
     },
     #     #calculate_and_save_apr_every_two_hours
     # 'calculate_and_save_apr_every_two_hours': {
@@ -147,19 +152,27 @@ CELERY_BEAT_SCHEDULE = {
     # },
     'calculate_and_save_average': {
         'task': 'core.views.calculate_and_save_average',
-        'schedule': 3600,  # Run the in once every week
+        'schedule': 21600,  # Run the in once every week
     },
 
       
 }
 
 # settings.py
+BROKER_URL = 'pyamqp://root:GU%23S84_9du%24hg%40f%25Gewj@127.0.0.1:5672//'
 
 # Example RabbitMQ configuration
-# BROKER_URL = 'pyamqp://alex:firsttensor@127.0.0.1:5672//'  shaukat
-BROKER_URL = 'pyamqp://pdf:shamlat42wx@127.0.0.1:5672//'
+#BROKER_URL = 'pyamqp://root:GU#S84_9du$hg@f%Gewj@127.0.0.1:5672//' # shaukat
+# BROKER_URL = 'pyamqp://pdf:shamlat42wx@127.0.0.1:5672//'
 CELERY_RESULT_BACKEND = 'rpc://'
+# Celery settings
+# Task acknowledgment and prefetch settings
+CELERY_TASK_ACKS_LATE = True
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 
+# Broker transport options
+
+#CELERY_RESULT_BACKEND = 'django-db'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -170,23 +183,30 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
 
 # CRONJOBS = [
 #     ('*/5 * * * *', 'core.views.fetch_and_save_data', '> ./file.log')
 # ]
+#CSRF_TRUSTED_ORIGINS=['https://*.api.bittensorstaking.com/']
+#CSRF_TRUSTED_ORIGINS = ['https://api.bittensorstaking.com']
 
+#CORS_ALLOWED_ORIGINS = [
+ #   "https://bittensorstaking.com",
+#]
 
+CORS_ALLOWED_ORIGINS = ['http://91.235.116.250', 'http://imp22','https://bittensor-staking.vercel.app',"https://api.bittensorstaking.com","https://bittensorstaking.com"] #shaukat
+# CORS_ALLOWED_ORIGINS = ['http://127.0.0.1','https://bittensor-staking.vercel.app']
 
-# CORS_ALLOWED_ORIGINS = ['http://91.235.116.250', 'http://imp22','https://bittensor-staking.vercel.app'] shaukat
-CORS_ALLOWED_ORIGINS = ['http://127.0.0.1','https://bittensor-staking.vercel.app']
-
-# CSRF_TRUSTED_ORIGINS = ['http://91.235.116.250:8001'] shaukat
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://bittensor-staking.vercel.app','https://85.239.241.96']
+CSRF_TRUSTED_ORIGINS = ['http://91.235.116.250:8001','https://*.api.bittensorstaking.com/'] #shaukat
+# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000','https://bittensor-staking.vercel.app','https://85.239.241.96']
 
 #STATICFILES_DIRS=[
  #   os.path.join(BASE_DIR,'static')
 #]
-CORS_ALLOW_ALL_ORIGINS =True
+#CORS_ALLOW_ALL_ORIGINS =True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-APPEND_SLASH = False
+APPEND_SLASH = True
+

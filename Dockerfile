@@ -19,7 +19,7 @@ RUN pip install django-cors-headers==4.2.0
 RUN pip install django-crontab==0.7.1
 RUN pip install tqdm==4.64.1
 RUN pip install requests==2.25.0
-RUN pip install bittensor==6.3.0
+RUN pip install bittensor==6.4.2
 
 # Install Redis (without cron)
 RUN apt-get update && apt-get install -y redis-server

@@ -1,0 +1,21 @@
+[1;36m 
+ -------------- celery@vmi1101899 v5.3.5 (emerald-rush)
+--- ***** ----- 
+-- ******* ---- Linux-5.4.0-167-generic-x86_64-with-glibc2.31 2023-12-29 13:59:10
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         polka:0x7f1d690f1850
+- ** ---------- .> transport:   amqp://guest:**@localhost:5672//
+- ** ---------- .> results:     rpc://
+- *** --- * --- .> concurrency: 6 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+[0m[0m
+[tasks]
+  . core.views.calculate_and_save_average
+  . core.views.fetch_and_save_data
+  . core.views.scripts
+[0m
